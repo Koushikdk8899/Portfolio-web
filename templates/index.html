@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>D. Koushik | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head><body><div class="wrap">
+<nav><a href="#about">About</a><a href="#projects">Projects</a><a href="#contact">Contact</a></nav>
+
+<header class="hero">
+  <div>
+    <h1>D. Koushik</h1>
+    <p>Student developer building small, useful web apps with Python and Flask.</p>
+    <a class="btn" href="#projects">See my projects</a>
+  </div>
+<pre><span class="k">class</span> Koushik:
+    role   = <span class="s">"Student developer"</span>
+    stack  = [<span class="s">"Python"</span>, <span class="s">"Flask"</span>,
+              <span class="s">"SQL"</span>, <span class="s">"HTML/CSS"</span>]
+    status = <span class="s">"Open to internships"</span></pre>
+</header>
+
+<section id="about" class="about"><h2>About</h2>
+  <p>I'm a student who enjoys turning everyday problems into working software. I like Python for its clarity, and I build projects end to end: a database, a backend, and a simple interface people can use.</p>
+  <ul class="skills"><li>Python</li><li>Flask</li><li>SQLite</li><li>REST APIs</li><li>HTML &amp; CSS</li><li>JavaScript</li><li>Git &amp; GitHub</li></ul>
+</section>
+
+<section id="projects"><h2>Projects</h2>
+  <article class="proj"><div><h3>Expense Tracker</h3><div class="tag">Flask, SQLite</div></div>
+    <div><p>A web app to log daily spending by category and see monthly totals. Data is stored in SQLite and served through Flask routes.</p><p>Features: add and delete expenses, category summaries, monthly filter.</p></div></article>
+  <article class="proj"><div><h3>Weather Dashboard</h3><div class="tag">Python, Requests, REST API</div></div>
+    <div><p>Search any city and get current temperature, humidity and wind from a public weather API. Python handles the API call and error cases, such as an unknown city.</p></div></article>
+  <article class="proj"><div><h3>Quiz App</h3><div class="tag">Flask, Jinja2</div></div>
+    <div><p>A multiple-choice quiz that scores answers on the server and shows results with correct answers. Questions are stored in a Python data file so new topics are easy to add.</p></div></article>
+</section>
+
+<section id="contact"><h2>Contact</h2>
+  <form id="f">
+    <label>Name<input name="name" required maxlength="100" autocomplete="name"></label>
+    <label>Email<input name="email" type="email" required maxlength="120" autocomplete="email"></label>
+    <label>Message<textarea name="message" rows="5" required maxlength="2000"></textarea></label>
+    <button class="btn" type="submit">Send message</button>
+    <p id="status" role="status"></p>
+  </form>
+</section>
+
+<footer><span>&copy; 2026 D. Koushik</span><span>Visitors: {{ visits }}</span></footer>
+</div>
+<script>
+const f=document.getElementById("f"),st=document.getElementById("status");
+f.addEventListener("submit",async e=>{
+  e.preventDefault();st.className="";st.textContent="Sending...";
+  try{
+    const r=await fetch("/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.fromEntries(new FormData(f)))});
+    const d=await r.json();
+    if(d.ok){st.className="ok";st.textContent="Message sent. Thank you!";f.reset()}
+    else{st.className="err";st.textContent=d.error||"Something went wrong."}
+  }catch(_){st.className="err";st.textContent="Couldn't reach the server. Try again."}
+});
+</script></body></html>
